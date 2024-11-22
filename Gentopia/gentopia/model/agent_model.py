@@ -9,6 +9,8 @@ class AgentType(Enum):
     """
     Enumerated type for agent types.
     """
+
+    anthropic = "anthropic"
     openai = "openai"
     react = "react"
     rewoo = "rewoo"
@@ -37,6 +39,9 @@ class AgentType(Enum):
         elif _type == AgentType.openai_memory:
             from gentopia.agent.openai_memory import OpenAIMemoryChatAgent
             return OpenAIMemoryChatAgent
+        elif _type == AgentType.anthropic:
+            from gentopia.agent.anthropic import AnthropicClaudeAgent
+            return AnthropicClaudeAgent
         else:
             raise ValueError(f"Unknown agent type: {_type}")
 

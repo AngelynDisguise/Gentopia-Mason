@@ -4,7 +4,7 @@ from typing import Union, Dict, Optional
 from gentopia.prompt import PromptTemplate
 from gentopia.agent.base_agent import BaseAgent
 from gentopia.assembler.config import Config
-from gentopia.llm import OpenAIGPTClient
+from gentopia.llm import OpenAIGPTClient, AnthropicClaudeClient
 from gentopia.utils.util import check_huggingface
 
 if check_huggingface():
@@ -15,7 +15,7 @@ from gentopia.manager.base_llm_manager import BaseLLMManager
 from gentopia.memory.api import MemoryWrapper
 from gentopia.memory.api import create_memory
 from gentopia.model.agent_model import AgentType
-from gentopia.model.param_model import OpenAIParamModel, HuggingfaceParamModel
+from gentopia.model.param_model import OpenAIParamModel, HuggingfaceParamModel, AnthropicParamModel
 from gentopia.tools import *
 from gentopia.tools import BaseTool
 from gentopia.tools.basetool import ToolMetaclass
@@ -123,13 +123,13 @@ class AgentAssembler:
 
     def _parse_llm(self, obj) -> BaseLLM:
         """
-            This method parses the Language Model Manager (LLM) configuration and returns an LLM instance.
+        This method parses the Language Model Manager (LLM) configuration and returns an LLM instance.
 
-            :param obj: A configuration dictionary or string.
-            :type obj: dict or str
-            :raises ValueError: If the specified LLM is not supported.
-            :return: An LLM instance.
-            :rtype: BaseLLM
+        :param obj: A configuration dictionary or string.
+        :type obj: dict or str
+        :raises ValueError: If the specified LLM is not supported.
+        :return: An LLM instance.
+        :rtype: BaseLLM
         """
         if isinstance(obj, str):
             name = obj
@@ -138,11 +138,18 @@ class AgentAssembler:
             name = obj['model_name']
             model_param = obj.get('params', dict())
         llm = None
-        if TYPES.get(name, None) == "OpenAI":
-            # key = obj.get('key', None)
+        
+        model_type = TYPES.get(name)
+        
+        if model_type == "OpenAI":
             params = OpenAIParamModel(**model_param)
             llm = OpenAIGPTClient(model_name=name, params=params)
-        elif TYPES.get(name, None) == "Huggingface":
+            
+        elif model_type == "Anthropic":
+            params = AnthropicParamModel(**model_param)
+            llm = AnthropicClaudeClient(model_name=name, params=params)
+            
+        elif model_type == "Huggingface":
             try:
                 import torch
             except ImportError:
@@ -150,11 +157,17 @@ class AgentAssembler:
             device = obj.get('device', 'gpu' if torch.cuda.is_available() else 'cpu')
             params = HuggingfaceParamModel(**model_param)
             llm = HuggingfaceLLMClient(model_name=name, params=params, device=device)
+            
         if llm is None:
             raise ValueError(f"LLM {name} is not supported currently.")
+            
         if self.manager is None:
             return llm
-        return self.manager.get_llm(name, params, cls=HuggingfaceLLMClient, device=device)
+            
+        if model_type == "Huggingface":
+            return self.manager.get_llm(name, params, cls=HuggingfaceLLMClient, device=device)
+        else:
+            return llm
 
     def _get_prompt_template(self, obj):
         """

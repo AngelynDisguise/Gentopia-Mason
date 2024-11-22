@@ -33,8 +33,10 @@ def main():
     assembler = AgentAssembler(file=agent_config_path)
 
     # # assembler.manager = LocalLLMManager()
-    # print(f">>> Assembling agent {agent_name}...")
+    print(f">>> Assembling agent {agent_name}...")
     agent = assembler.get_agent()
+    # print("Found agent, ", agent.name)
+    # print("Type, ", agent.type)
 
     if agent.name != agent_name:
         raise ValueError(f"Agent name mismatch. Expected {agent_name}, got {agent.name}.")

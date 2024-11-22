@@ -1,6 +1,9 @@
 # Listing available LLMs
 
 TYPES = {
+    "claude-3-opus-20240229": "Anthropic",
+    "claude-3-sonnet-20240229": "Anthropic",
+    "claude-3-haiku-20240229": "Anthropic",
     "gpt-3.5-turbo": "OpenAI",
     'text-davinci-003': "OpenAI",
     "gpt-4": "OpenAI",
@@ -54,6 +57,9 @@ TYPES = {
 }
 
 COSTS = {
+    "claude-3-opus-20240229": {"prompt": 0.015 / 1000, "completion": 0.075 / 1000},
+    "claude-3-sonnet-20240229": {"prompt": 0.003 / 1000, "completion": 0.015 / 1000},
+    "claude-3-haiku-20240229": {"prompt": 0.00025 / 1000, "completion": 0.00125 / 1000},
     "gpt-3.5-turbo": {"prompt": 0.0015 / 1000, "completion": 0.002 / 1000},
     "gpt-4": {"prompt": 0.03 / 1000, "completion": 0.06 / 1000},
     "gpt-3.5-turbo-16k": {"prompt": 0.003 / 1000, "completion": 0.004 / 1000},

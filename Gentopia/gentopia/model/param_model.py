@@ -10,6 +10,16 @@ class BaseParamModel(BaseModel):
     def __eq__(self, other):
         return self.dict() == other.dict()
 
+class AnthropicParamModel(BaseParamModel):
+    """
+    Anthropic Claude API parameters
+    """
+    temperature: float = 0.7
+    max_tokens: int = 1000
+    top_p: float = 1.0
+    top_k: int = -1
+    system: str = ""
+    anthropic_version: str = "2023-06-01"
 
 class OpenAIParamModel(BaseModel):
     """
@@ -22,7 +32,6 @@ class OpenAIParamModel(BaseModel):
     frequency_penalty: float = 0.0
     n: int = 1
     stop: list = []
-
 
 class HuggingfaceLoaderModel(BaseModel):
     """
