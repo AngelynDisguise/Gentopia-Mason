@@ -23,17 +23,16 @@ And so on...
 {task}
 
 ##Important Guidelines##
-- Always check inventory first before researching recipes. Make the best effort to suggest recipes which has most of our ingredients.
-- Use fresh, quality ingredients
 - Maintain proper food safety standards
+- Ensure nutritional requirements are met
+- Consider cultural authenticity when relevant
+
+Remember to coordinate between different specialists (allergen, nutrition, culture) to create a cohesive plan.
 
 ##Now Begin!##
 """
 )
 
-# 4. Ensure nutritional requirements are met
-# 3. Consider cultural authenticity when relevant
-# Remember to coordinate between different specialists (inventory, nutrition, culture) to create a cohesive plan.
 
 RamsaySolverPrompt = PromptTemplate(
     input_variables=["plan_evidence", "task"],

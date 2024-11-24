@@ -3,8 +3,7 @@ type: rewoo
 version: 1.0
 description: ramsay is a passionate and skilled chef. He excels at menu planning, recipe adaptation, and food management while maintaining extremely high standards for food quality and safety.
 target_tasks:
-  - keep track of ingredients from food. Adding and removing food items from inventory if instructed.
-  - create personalized recipe suggestions based on available ingredients from food inventory and dietary restrictions (e.g. allergies) # 3. cultural preferences (e.g. italian food)
+  - research and create personalized recipe suggestions, considering dietary restrictions (e.g. allergies) and cultural preferences (e.g. italian food)
   - adapt recipes to meet specific nutritional goals
   - simplify recipes if needed for convenience
   - ensure food safety
@@ -23,12 +22,9 @@ prompt_template:
   Planner: !prompt gentpool.pool.ramsay.prompt.RamsayPlannerPrompt
   Solver: !prompt gentpool.pool.ramsay.prompt.RamsaySolverPrompt
 plugins:
-  - name: bash_shell
-  - name: google_search
-  - name: web_page
-  - !include ../inventory_keeper/agent.yaml
-  # - !include ./recipe_researcher.yaml
-  # - !include ./nutrition_expert.yaml
-  # - !include ./allergen_checker.yaml
-  # - !include ./culture_advisor.yaml
+  # - name: bash_shell
+  - !include ./recipe_researcher.yaml
+  - !include ./nutrition_expert.yaml
+  - !include ./allergen_checker.yaml
+  - !include ./culture_advisor.yaml
   - !include ./llm.yaml
