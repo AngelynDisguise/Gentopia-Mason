@@ -45,5 +45,5 @@ def load_tools(name: str) -> BaseTool:
         "search_cite_paper": SearchCitePaper,
     }
     if name not in name2tool:
-        raise NotImplementedError
+        raise NotImplementedError(f"tool not implemented: {name}")
     return name2tool[name]

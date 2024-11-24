@@ -1,0 +1,16 @@
+name: culture_advisor
+type: anthropic
+version: 0.0.1
+description: Provides cultural context and authenticity validation for recipes.
+target_tasks:
+  - verify cultural authenticity
+  - suggest traditional techniques
+  - recommend authentic ingredients
+prompt_template: !prompt VanillaPrompt
+llm:
+  model_name: claude-3-sonnet-20240229
+  params:
+    temperature: 0.1
+    max_tokens: 512
+plugins:
+  - name: google_search

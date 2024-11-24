@@ -136,16 +136,22 @@ class AnthropicClaudeClient(BaseLLM, BaseModel):
             )
 
             for response in stream:
+                # print(response)
+                delta_text = ""
+                if hasattr(response, 'type'):
+                    if response.type == 'content_block_delta':
+                        delta_text = response.delta.text
                 yield ChatCompletion(
                     state="success",
                     role="assistant",
-                    content=response.delta.text if response.delta.text else "",
-                    prompt_token=0,  # Tokens not available in stream mode
+                    content=delta_text,
+                    prompt_token=0,  
                     completion_token=0
                 )
 
+
         except Exception as exception:
-            print("Exception:", exception)
+            print("Exception in stream_chat_completion:", exception)
             yield ChatCompletion(state="error", content=str(exception))
 
     def function_chat_completion(self, message: List[dict],
@@ -230,7 +236,7 @@ class AnthropicClaudeClient(BaseLLM, BaseModel):
                 )
 
         except Exception as exception:
-            print("Exception:", exception)
+            print("Exception in function_chat_completion:", exception)
             return ChatCompletionWithHistory(state="error", content=str(exception))
     
 

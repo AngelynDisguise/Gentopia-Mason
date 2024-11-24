@@ -53,6 +53,7 @@ class Planner(BaseModel):
                 return self.prompt_template.format(tool_description=worker_desctription, fewshot=fewshot,
                                                    task=instruction)
             else:
+                # print("Planner's instruction: ", instruction)
                 return self.prompt_template.format(tool_description=worker_desctription, task=instruction)
         else:
             if self.examples is not None:
@@ -79,4 +80,5 @@ class Planner(BaseModel):
         output.debug(f"Prompt: {prompt}")
         response = self.model.stream_chat_completion([{"role": "user", "content": prompt}])
         for i in response:
+            # print(i)
             yield i.content

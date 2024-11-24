@@ -1,0 +1,16 @@
+name: allergen_checker
+type: anthropic
+version: 0.0.1
+description: Identifies potential allergens in recipes and suggests safe substitutions.
+target_tasks:
+  - check for common allergens
+  - validate ingredient safety
+  - recommend alternatives
+prompt_template: !prompt VanillaPrompt
+llm:
+  model_name: claude-3-sonnet-20240229
+  params:
+    temperature: 0.0
+    max_tokens: 512
+plugins:
+  - name: google_search

@@ -2,6 +2,7 @@ from typing import List, Union, Optional
 
 from gentopia.agent.base_agent import BaseAgent
 from gentopia.llm import OpenAIGPTClient
+from gentopia.llm import AnthropicClaudeClient
 from gentopia.utils.util import check_huggingface
 if check_huggingface():
     from gentopia.llm import HuggingfaceLLMClient
@@ -115,6 +116,8 @@ class VanillaAgent(BaseAgent):
             output = BaseOutput()
         output.thinking(self.name)
         if isinstance(self.llm, OpenAIGPTClient):
+            response = self.llm.stream_chat_completion([{"role": "user", "content": prompt}])
+        elif isinstance(self.llm, AnthropicClaudeClient):
             response = self.llm.stream_chat_completion([{"role": "user", "content": prompt}])
         elif isinstance(self.llm, HuggingfaceLLMClient):
             #TODO: Is there a better way to format chat message for open LLMs? For example, 'user:\nAI:\n'

@@ -7,5 +7,6 @@ from .rewoo_template import *
 from .openai_template import *
 from .vanilla_template import *
 from .openai_memory_template import *
-from .vanilla-ziyu import *
-from .scholar-ziyu import *
+from .scholar import *
+from .ramsay import *
+from .inventory_keeper import *
