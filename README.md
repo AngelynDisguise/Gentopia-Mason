@@ -56,20 +56,20 @@ $env:OPENAI_API_KEY="<YOUR KEY>"
 Now you are all set! Let's create your first Gentopia Agent.
 
 
-## Quick Start: Clone a Vanilla LLM Agent
-GentPool has provided multiple template LLM agents. To get started, we will clone the "vanilla agent" from `GentPool/gentpool/pool/vanilla_template` with the following command:
+## Quick Start: Clone a Anthropic Claude Agent
+GentPool has provided multiple template LLM agents. To get started, we will clone the "vanilla agent" from `GentPool/gentpool/pool/anthropic_template` with the following command:
 
 **For Linux/Mac**
 ```
-./clone_agent vanilla_template <your_agent_name> 
+./clone_agent anthropic_template <your_agent_name> 
 ```
 
 **For Windows (Windows Powershell)**
 ```
-.\clone_agent.bat vanilla_template <your_agent_name> #note the .bat file 
+.\clone_agent.bat anthropic_template <your_agent_name> #note the .bat file 
 ```
 
-This command will initiate an agent template under `./GentPool/gentpool/pool/<your_agent_name>`. The agent configuration can be found in `./GentPool/gentpool/pool/<your_agent_name>/agent.yaml` (note the agent type `vanilla`). The vanilla prompt it uses can be found in the source code of `Gentopia`; see `./Gentopia/gentopia/prompt/vanilla.py`.
+This command will initiate an agent template under `./GentPool/gentpool/pool/<your_agent_name>`. The agent configuration can be found in `./GentPool/gentpool/pool/<your_agent_name>/agent.yaml` (note the agent type `anthropic_template`). The vanilla prompt it uses can be found in the source code of `Gentopia`; see `./Gentopia/gentopia/prompt/vanilla.py`.
 
 You can now run your agent via:
 ```
@@ -77,26 +77,13 @@ python assemble.py <your_agent_name>
 ```
 This vanilla agent simply sends the received user query to the backend LLM and returns its output. Therefore, for many complicated tasks, such as those requiring accessing the latest materials, it will fail. 
 
-## Implement a Scholar LLM Agent with Tool Augmentation
-In the second trial, we will create a Scholar agent which is augmented with multiple functions to access Google Scholar in real time.
+## Getting started with Ramsay Agent
+Similar to the `rewoo` agent "elon" from the Gentopia tutorials, another `rewoo` agent "ramsay" is here to provide professional recipes based on your personal needs.
 
-This is based on the `scholar` agent we have created in the pool. As before, in this demo we simply clone it:
-
-**For Linux/Mac**
+**To run it:**
 ```
-./clone_agent scholar <your_agent_name> 
+python assemble.py ramsay
 ```
 
-**For Windows (Windows Powershell)**
-```
-.\clone_agent.bat scholar <your_agent_name> #note the .bat file 
-```
-
-Like before, this command created an agent under `./GentPool/gentpool/pool/<your_agent_name>`. Note from its configuration that scholar is an `openai`-type agent. As stated in its [Gentopia's implementation](./Gentopia/gentopia/agent/openai), this type of agent allows for function calling:
-> OpenAIFunctionChatAgent class inherited from BaseAgent. Implementing OpenAI function call api as agent.
-
-The available functions to the scholar agent have been listed in its configuration file `./GentPool/gentpool/pool/<your_agent_name>/agent.yaml`, and the implementation of these tools can be found in Gentopia's source code (mostly coming from the [google_scholar.py](./Gentopia/gentopia/tools/google_scholar.py) file, in this example).
-
-Now, you are all set to query this scholar agent for the latest papers by certain authors, the summary of a certain paper, paper citations, etc.
 
 
