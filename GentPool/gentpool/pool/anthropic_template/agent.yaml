@@ -1,13 +1,18 @@
 name: anthropic_template
 type: anthropic
 version: 0.0.1
-description: An agent using Claude 3.5
+description: A Claude agent capable of online web search and browsing.
 target_tasks:
-  - anything to do with an LLM
+  - web search
+  - web browsing
 llm:
   model_name: claude-3-sonnet-20240229
   params:
-    temperature: 0.7
-    max_tokens: 1000
     system: You are a helpful AI assistant.
+    temperature: 0.0
+    top_p: 0.9
+    max_tokens: 1024
 prompt_template: !prompt VanillaPrompt
+plugins:
+  - name: google_search
+  - name: web_page
