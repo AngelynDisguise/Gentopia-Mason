@@ -7,14 +7,14 @@ import anthropic
 from gentopia.llm.base_llm import BaseLLM
 from gentopia.model.agent_model import AgentOutput
 from gentopia.model.completion_model import *
-from gentopia.model.param_model import *
+from gentopia.model.param_model import AnthropicParamModel
 import json
 
 class AnthropicClaudeClient(BaseLLM, BaseModel):
     """
-    Wrapper class for Anthropic Claude API.
+    Wrapper class for Anthropic Claude API collections.
 
-    :param model_name: The name of the model to use (e.g. "claude-3-opus-20240229")
+    :param model_name: The name of the model to use
     :type model_name: str
     :param params: The parameters for the model
     :type params: AnthropicParamModel
@@ -46,14 +46,16 @@ class AnthropicClaudeClient(BaseLLM, BaseModel):
         :type prompt: str
         :param kwargs: Additional keyword arguments
         :return: BaseCompletion object
+        :rtype: BaseCompletion
         """
         try:
             response = self.client.messages.create(
                 model=self.model_name,
-                max_tokens=self.params.max_tokens,
-                temperature=self.params.temperature,
                 system=self.params.system,
                 messages=[{"role": "user", "content": prompt}],
+                temperature=self.params.temperature,
+                max_tokens=self.params.max_tokens,
+                top_p=self.params.top_p,
                 **kwargs
             )
             
@@ -88,10 +90,11 @@ class AnthropicClaudeClient(BaseLLM, BaseModel):
 
             response = self.client.messages.create(
                 model=self.model_name,
-                max_tokens=self.params.max_tokens,
-                temperature=self.params.temperature,
                 system=self.params.system,
-                messages=anthropic_messages
+                messages=anthropic_messages,
+                temperature=self.params.temperature,
+                max_tokens=self.params.max_tokens,
+                top_p=self.params.top_p,
             )
 
             return ChatCompletion(
@@ -127,10 +130,11 @@ class AnthropicClaudeClient(BaseLLM, BaseModel):
 
             stream = self.client.messages.create(
                 model=self.model_name,
-                max_tokens=self.params.max_tokens,
-                temperature=self.params.temperature,
                 system=self.params.system,
                 messages=anthropic_messages,
+                temperature=self.params.temperature,
+                max_tokens=self.params.max_tokens,
+                top_p=self.params.top_p,
                 stream=True,
                 **kwargs
             )
@@ -155,11 +159,11 @@ class AnthropicClaudeClient(BaseLLM, BaseModel):
             yield ChatCompletion(state="error", content=str(exception))
 
     def function_chat_completion(self, message: List[dict],
-                               function_map: Dict[str, Callable],
-                               function_schema: List[Dict]) -> ChatCompletionWithHistory:
+                            function_map: Dict[str, Callable],
+                            function_schema: List[Dict]) -> ChatCompletionWithHistory:
         """
         Function calling is not directly supported by Claude in the same way as OpenAI.
-        This method provides a basic implementation that formats function schemas into the system prompt.
+        This method formats function schemas into the system prompt.
 
         :param message: List of message dictionaries with role and content
         :param function_map: Dictionary mapping function names to callable functions
@@ -173,14 +177,14 @@ class AnthropicClaudeClient(BaseLLM, BaseModel):
             # print(response)
 
             try:
-                # Try to parse response as function call
+                # Parse response as function call
                 function_call = json.loads(response.content)
                 if "function" in function_call and "arguments" in function_call:
                     function_name = function_call["function"]
                     function_to_call = function_map[function_name]
                     function_response = function_to_call(**function_call["arguments"])
 
-                    # Process function response
+                    # Postprocess function response
                     plugin_cost = 0
                     plugin_token = 0
                     if isinstance(function_response, AgentOutput):
@@ -201,7 +205,6 @@ class AnthropicClaudeClient(BaseLLM, BaseModel):
                         "content": str(function_response)
                     })
 
-                    # Get final response
                     final_response = self.chat_completion(message)
                     message.append({
                         "role": "assistant",
@@ -220,7 +223,7 @@ class AnthropicClaudeClient(BaseLLM, BaseModel):
                     )
 
             except json.JSONDecodeError:
-                # If response is not JSON, treat as regular response
+                # if response is not JSON, treat as regular response
                 message.append({
                     "role": "assistant",
                     "content": response.content
@@ -239,7 +242,6 @@ class AnthropicClaudeClient(BaseLLM, BaseModel):
             print("Exception in function_chat_completion:", exception)
             return ChatCompletionWithHistory(state="error", content=str(exception))
     
-
     def function_chat_stream_completion(self, messages: List[dict],
                                   function_map: Dict[str, Callable],
                                   function_schema: List[Dict]) -> Generator:
@@ -253,7 +255,6 @@ class AnthropicClaudeClient(BaseLLM, BaseModel):
         :return: Generator yielding tuple of (type, ChatCompletionWithHistory)
         """
         try:
-            # Process messages for Claude format
             anthropic_messages = []
             for msg in messages:
                 if msg["role"] == "system":
@@ -264,13 +265,13 @@ class AnthropicClaudeClient(BaseLLM, BaseModel):
                     "content": msg["content"]
                 })
 
-            # Create streaming response
             stream = self.client.messages.create(
                 model=self.model_name,
-                max_tokens=self.params.max_tokens,
-                temperature=self.params.temperature,
                 system=self.params.system,
                 messages=anthropic_messages,
+                temperature=self.params.temperature,
+                max_tokens=self.params.max_tokens,
+                top_p=self.params.top_p,
                 stream=True
             )
 
@@ -283,10 +284,10 @@ class AnthropicClaudeClient(BaseLLM, BaseModel):
                         accumulated_text += delta_text
 
                         try:
-                            # Try to parse as JSON to check if it's a function call
+                            # check if it's a function call
                             parsed_json = json.loads(accumulated_text)
                             if isinstance(parsed_json, dict) and "function" in parsed_json and "arguments" in parsed_json:
-                                # It's a complete function call
+                                # it's a complete function call
                                 yield "function_call", ChatCompletionWithHistory(
                                     state="success",
                                     role="assistant",
@@ -299,10 +300,9 @@ class AnthropicClaudeClient(BaseLLM, BaseModel):
                                 )
                                 return
                             else:
-                                # Still accumulating potential JSON
                                 continue
                         except json.JSONDecodeError:
-                            # Not JSON, treat as regular response
+                            # not JSON, treat as regular response
                             yield "content", ChatCompletionWithHistory(
                                 state="success",
                                 role="assistant",

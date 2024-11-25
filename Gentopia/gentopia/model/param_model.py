@@ -12,18 +12,20 @@ class BaseParamModel(BaseModel):
 
 class AnthropicParamModel(BaseParamModel):
     """
-    Anthropic Claude API parameters
+    Anthropic Claude API parameters.
+    See Messages API: https://docs.anthropic.com/en/api/messages 
     """
-    temperature: float = 0.7
     max_tokens: int = 1000
+    temperature: float = 0.7
     top_p: float = 1.0
-    top_k: int = -1
+    stop_sequences: list = []
     system: str = ""
     anthropic_version: str = "2023-06-01"
 
 class OpenAIParamModel(BaseModel):
     """
-    OpenAI API parameters
+    OpenAI API parameters.
+    See Chat Completions API: https://platform.openai.com/docs/api-reference/chat 
     """
     max_tokens: int = 2048
     temperature: float = 0.2
