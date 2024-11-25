@@ -10,3 +10,4 @@ from .openai_memory_template import *
 from .scholar import *
 from .ramsay import *
 from .inventory_keeper import *
+from .recipe_researcher import *

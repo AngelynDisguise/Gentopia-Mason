@@ -2,7 +2,7 @@ from typing import AnyStr
 import requests
 from bs4 import BeautifulSoup
 from gentopia.tools.basetool import *
-
+import traceback
 
 class WebPageArgs(BaseModel):
     url: str = Field(..., description="a web url to visit. You must make sure that the url is real and correct.")
@@ -27,7 +27,7 @@ class WebPage(BaseTool):
             text = ' '.join(line for line in lines if line)[:4096] + '...'
             return text
         except Exception as e:
-            return f"Error: {e}\n Probably it is an invalid URL."
+            return f"Error: {e}\n Probably it is an invalid URL. \nTraceback\n{traceback.format_exc()}"
 
     async def _arun(self, *args: Any, **kwargs: Any) -> Any:
         raise NotImplementedError

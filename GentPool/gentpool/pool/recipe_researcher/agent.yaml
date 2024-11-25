@@ -1,0 +1,17 @@
+name: recipe_researcher
+type: anthropic
+version: 0.0.1
+description: Researches and suggests recipes based on dietary requirements, available ingredients, and cultural preferences.
+target_tasks:
+  - find suitable recipes matching criteria
+  - suggest recipe modifications
+  - provide cooking techniques
+prompt_template: !prompt VanillaPrompt
+llm:
+  model_name: claude-3-sonnet-20240229
+  params:
+    temperature: 0.2
+    max_tokens: 1024
+plugins:
+  - name: google_search
+  - name: web_page
