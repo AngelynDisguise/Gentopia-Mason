@@ -37,27 +37,31 @@ export PYTHONPATH="$PWD/Gentopia:$PYTHONPATH"
 $env:PYTHONPATH = "$PWD/Gentopia;$env:PYTHONPATH"
 ```
 
-In addition, since we will be using OpenAI's API, we also need to create a `.env` file under `GentPool` and put the API Key inside. The key will be registered as environmental variables at run time. To do this,
+In addition, since we will be using LLM APIs (e.g., OpenAI, Anthropic), we also need to create a `.env` file under `GentPool` and put the API Key inside. The key will be registered as environmental variables at run time. To do this,
 first, let's change the directory:
 ```
 cd GentPool
 ```
 
+Then, provide the API key for your preferred LLM(s). Please note that each agent requires the corresponding LLM API key to function properly; without it, the agent will fail to initialize.
+
 **For Linux/Mac**
 ```
 touch .env
 echo "OPENAI_API_KEY=<your_openai_api_key>" >> .env
+echo "ANTHROPIC_API_KEY=<your_anthropic_api_key>" >> .env
 ```
 
 **For Windows (Windows Powershell)**
 ```
-$env:OPENAI_API_KEY="<YOUR KEY>"
+$env:OPENAI_API_KEY="<your_openai_api_key>"
+$env:ANTHROPIC_API_KEY="<your_anthropic_api_key>"
 ```
 Now you are all set! Let's create your first Gentopia Agent.
 
 
-## Quick Start: Clone a Anthropic Claude Agent
-GentPool has provided multiple template LLM agents. To get started, we will clone the "vanilla agent" from `GentPool/gentpool/pool/anthropic_template` with the following command:
+## Quickstart: Clone a Anthropic Claude Agent
+GentPool has provided multiple template LLM agents. To get started, we will clone the "anthropic claude agent" from `GentPool/gentpool/pool/anthropic_template` with the following command:
 
 **For Linux/Mac**
 ```
@@ -84,6 +88,3 @@ Similar to the `rewoo` agent "elon" from the Gentopia tutorials, another `rewoo`
 ```
 python assemble.py ramsay
 ```
-
-
-
