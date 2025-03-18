@@ -16,7 +16,7 @@ cd Gentopia-Mason
 ```
 If you have not set up your ssh keys yet, you may receive an error. Instead, you can clone the repository using the following command:
 ```
-git clone https://github.com/LittleYUYU/Gentopia-Mason.git
+git clone git@github.com:AngelynDisguise/Gentopia-Mason.git
 ```
 
 Next, we will create a virtual environment and install the library:
@@ -60,7 +60,7 @@ $env:ANTHROPIC_API_KEY="<your_anthropic_api_key>"
 Now you are all set! Let's create your first Gentopia Agent.
 
 
-## Quickstart: Clone a Anthropic Claude Agent
+## Quickstart 🚀: Clone a Anthropic Claude Agent
 GentPool has provided multiple template LLM agents. To get started, we will clone the "anthropic claude agent" from `GentPool/gentpool/pool/anthropic_template` with the following command:
 
 **For Linux/Mac**
@@ -85,10 +85,17 @@ python assemble.py <your_agent_name>
 This agent simply sends the received user query to the backend LLM and returns its output. Therefore, for many complicated tasks, such as those requiring accessing the latest materials, it will fail. 
 
 
-## Getting started with Ramsay Agent
-Similar to the `rewoo` agent "elon" from the Gentopia tutorials, another `rewoo` agent "ramsay" is here to provide professional recipes based on your personal needs.
+## Getting started with Ramsay Agent 👨🏼‍🍳
+Similar to the [`rewoo`](https://gentopia.readthedocs.io/en/latest/quick_start.html#rewoo-agent) agent "elon" from the Gentopia tutorials, another `rewoo` agent "ramsay" is here to provide professional recipes based on your personal needs. Ramsay makes a detailed plan and consults other expert agents to come up with the most delicious solution!
 
 **To run it:**
 ```
 python assemble.py ramsay
 ```
+![image](https://github.com/user-attachments/assets/16156df9-6189-42e7-a93a-995eaada55e4)
+![image](https://github.com/user-attachments/assets/f45f3494-bfb8-4176-b31f-8f1fa08185fd)
+
+A few steps later ... 
+
+![image](https://github.com/user-attachments/assets/3d068f77-6597-4cb8-83f2-d129e5dc11fd)
+
