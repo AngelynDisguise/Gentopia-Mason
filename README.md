@@ -79,7 +79,11 @@ You can now run your agent via:
 ```
 python assemble.py <your_agent_name>
 ```
-This vanilla agent simply sends the received user query to the backend LLM and returns its output. Therefore, for many complicated tasks, such as those requiring accessing the latest materials, it will fail. 
+
+![image](https://github.com/user-attachments/assets/5c8d1cce-32fc-434a-9e5f-f8453745c092)
+
+This agent simply sends the received user query to the backend LLM and returns its output. Therefore, for many complicated tasks, such as those requiring accessing the latest materials, it will fail. 
+
 
 ## Getting started with Ramsay Agent
 Similar to the `rewoo` agent "elon" from the Gentopia tutorials, another `rewoo` agent "ramsay" is here to provide professional recipes based on your personal needs.
