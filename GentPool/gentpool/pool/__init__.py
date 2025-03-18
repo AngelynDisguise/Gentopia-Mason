@@ -11,3 +11,4 @@ from .scholar import *
 from .ramsay import *
 from .inventory_keeper import *
 from .recipe_researcher import *
+from .claude import *
